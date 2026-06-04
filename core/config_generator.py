@@ -1,13 +1,20 @@
-"""Config generator — turns a Config into protocol-specific output.
-
-NOTE: reuses the proven kian_v2ray logic. For Reality/WARP/SS/TLS the source of
-truth is kian_v2ray/kv2m/core.py (build_config/generate). This module is the
-KICDN-level adapter that will import/wrap those generators per protocol.
-"""
+"""Config generator — dispatches a Config to the matching protocol adapter."""
 from .models import Config
+from . import protocol_manager as _pm
+from .adapters import reality, mhrv, warp, ss
+
+_pm._REGISTRY.update({
+    "reality": reality.generate,
+    "mhrv":    mhrv.generate,
+    "warp":    warp.generate,
+    "ss":      ss.generate,
+})
+
 
 def generate(cfg: Config) -> dict:
     cfg.validate()
-    # TODO(TASK-012): dispatch to per-protocol adapters (reuse kv2m core for v2ray)
-    return {"profile": cfg.profile_name, "protocol": cfg.protocol,
-            "status": "stub — wire to kv2m core / mhrv / warp adapters"}
+    return _pm.get(cfg.protocol)(cfg)
+
+
+def available_protocols() -> list:
+    return _pm.available()
