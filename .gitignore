@@ -1,0 +1,30 @@
+# Internal workspace files (not for public repo)
+CLAUDE.md
+PLAN.md
+STATUS.md
+KICDN.md
+_MOC.md
+subprojects/
+_daily-reports/
+
+# Python
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.Python
+*.egg-info/
+dist/
+build/
+.venv/
+venv/
+.env
+
+# OS
+.DS_Store
+Thumbs.db
+
+# IDE
+.idea/
+.vscode/
+*.swp
